@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>КлассМастер</title>
+    <title>SchoolBot</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -21,36 +21,32 @@
             <button class="btn" id="contactUs">Связаться с нами</button>
         </div>
     </div>
+
     <div class="course-container" id="courseFormContainer" style="display: none;">
-    <h1 class="course-title">Создать новый курс</h1>
-    
-    <form id="courseForm">
-        <div class="form-group">
-            <label for="courseName" class="input-label">Название курса</label>
-            <input type="text" id="courseName" placeholder="Введите название курса" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="courseDescription" class="input-label">Описание курса</label>
-            <textarea id="courseDescription" placeholder="Опишите ваш курс" required></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="hashtags" class="input-label">Хэштеги</label>
-            <input type="text" id="hashtags" placeholder="Добавьте хэштеги (через запятую)" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="links" class="input-label">Ссылки</label>
+        <h1 class="course-title">Создать новый курс</h1>
+
+        <form id="courseForm">
+            <input type="text" id="courseName" placeholder="Название курса" required>
+            <textarea id="courseDescription" placeholder="Описание курса" required></textarea>
+            <input type="text" id="hashtags" placeholder="Хэштеги (через запятую)" required>
             <input type="url" id="links" placeholder="Добавьте ссылки" required>
+            <button type="button" id="addTopic">Добавить тему</button>
+            <button type="submit" class="btn">Сохранить курс</button>
+            <button type="button" class="btn" id="cancel">Отмена</button>
+        </form>
+    </div>
+
+    <div class="explore-container" id="exploreContainer" style="display: none;">
+        <h1 class="explore-title">Ищите что вам нравится</h1>
+        <div class="search-container">
+            <input type="text" id="searchCourse" placeholder="Поиск по названию или хэштегу">
+            <button id="searchButton" class="search-btn">🔍</button>
         </div>
-        
-        <button type="button" id="addTopic" class="btn">Добавить тему</button>
-        <button type="submit" class="btn">Сохранить курс</button>
-        <button type="button" class="btn" id="cancel">Отмена</button>
-    </form>
-</div>
-    
+        <div class="list-container">
+            <div class="list-message">Список пока пуст</div>
+        </div>
+        <button class="btn" id="closeExplore">Закрыть</button>
+    </div>
 </div>
 
 <script src="./index.js"></script>
