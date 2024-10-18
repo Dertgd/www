@@ -21,7 +21,7 @@ body {
 
 .welcome-container {
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -30,21 +30,24 @@ body {
 
 .course-container {
     padding: 30px;
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: #fff;
+    background-color: #ffffff;
+    color: #333;
     border-radius: 12px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: left;
+}
+
+img {
+    width: 100%;
+    border-radius: 10px;
 }
 
 .welcome-title,
 .course-title {
     font-size: 24px;
-    color: #ffffff;
+    color: #0078ff;
     margin-bottom: 20px;
-    background-color: #0078ff;
     padding: 10px;
-    border-radius: 15px;
 }
 
 .welcome-description {
@@ -54,29 +57,33 @@ body {
 }
 
 input::placeholder, textarea::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(0, 0, 0, 0.5);
 }
 
 input:focus, textarea:focus {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 input, textarea {
     width: 100%;
     padding: 15px;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    transition: background-color 0.3s;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #0078ff;
 }
 
 button {
     padding: 15px;
     font-size: 16px;
     color: #fff;
-    background-color: #ff4757;
+    background-color: #0078ff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -88,11 +95,11 @@ button {
     font-size: 14px;
     margin-bottom: 5px;
     display: block;
-    color: #ffffff;
+    color: #333;
 }
 
 button:hover {
-    background-color: #e84118;
+    background-color: #0056b3;
 }
 
 .form-group {
@@ -108,7 +115,7 @@ button:hover {
     body {
         height: auto;
     }
-    
+
     .welcome-description {
         font-size: 14px;
     }
@@ -120,9 +127,10 @@ button:hover {
     button {
         font-size: 14px;
     }
-    
+
     .course-container {
         width: 100%;
     }
 }
+
 
