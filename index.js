@@ -14,10 +14,49 @@ document.getElementById('closeExplore').addEventListener('click', function() {
     document.getElementById('exploreContainer').style.display = 'none';
     document.getElementById('welcomeContainer').style.display = 'block';
 });
+//логикa поиска по названию или хэштегу
 document.getElementById('searchButton').addEventListener('click', function() {
     const searchQuery = document.getElementById('searchCourse').value;
     console.log('Ищем курс по:', searchQuery);
-    //логика для фильтрации списка курсов
+    // Элемент инпута и кнопки поиска
+const searchInput = document.getElementById('searchCourse');
+const searchButton = document.getElementById('searchButton');
+const courseList = document.getElementById('courseList');
+
+// Слушатель события для кнопки поиска
+searchButton.addEventListener('click', function () {
+    const query = searchInput.value.trim();
+
+    if (query) {
+        // Отправляем запрос на сервер для фильтрации курсов
+        fetch(`/api/search-courses?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                // Очищаем список курсов
+                courseList.innerHTML = '';
+
+                if (data.length > 0) {
+                    // Добавляем отфильтрованные курсы в список
+                    data.forEach(course => {
+                        const courseItem = document.createElement('div');
+                        courseItem.classList.add('course-item');
+                        courseItem.textContent = `${course.name} - ${course.description}`;
+                        courseList.appendChild(courseItem);
+                    });
+                } else {
+                    // Если курсов нет, показываем сообщение
+                    courseList.innerHTML = '<p>Список пуст</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при получении списка курсов:', error);
+            });
+    } else {
+        // Если поле поиска пустое, очищаем список и выводим сообщение
+        courseList.innerHTML = '<p>Список пуст</p>';
+    }
+});
+
 });
 document.getElementById('courseForm').addEventListener('submit', function(event) {
     event.preventDefault();
