@@ -19,14 +19,22 @@ body {
     padding: 20px;
 }
 
-.welcome-container,
-.course-container {
+.welcome-container {
     padding: 20px;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: opacity 0.3s;
+}
+
+.course-container {
+    padding: 30px;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    text-align: left;
 }
 
 .welcome-title,
@@ -45,27 +53,30 @@ body {
     margin-bottom: 15px;
 }
 
-.welcome-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 20px;
+input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus, textarea:focus {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 input, textarea {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
     font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transition: background-color 0.3s;
 }
 
 button {
-    padding: 12px;
+    padding: 15px;
     font-size: 16px;
     color: #fff;
-    background-color: #0078FF;
+    background-color: #ff4757;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -73,18 +84,31 @@ button {
     margin: 5px 0;
 }
 
-button:hover {
-    background-color: #005bb5;
+.input-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+    color: #ffffff;
 }
 
-/* Медиазапрос для оптимизации под мобильные устройства */
+button:hover {
+    background-color: #e84118;
+}
 
-@media (max-width: 400px) {
+.form-group {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
     .welcome-title,
     .course-title {
         font-size: 20px;
     }
 
+    body {
+        height: auto;
+    }
+    
     .welcome-description {
         font-size: 14px;
     }
@@ -96,4 +120,9 @@ button:hover {
     button {
         font-size: 14px;
     }
+    
+    .course-container {
+        width: 100%;
+    }
 }
+
