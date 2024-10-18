@@ -2,12 +2,23 @@ document.getElementById('createCourse').addEventListener('click', function() {
     document.getElementById('welcomeContainer').style.display = 'none';
     document.getElementById('courseFormContainer').style.display = 'block';
 });
-
 document.getElementById('cancel').addEventListener('click', function() {
     document.getElementById('courseFormContainer').style.display = 'none';
     document.getElementById('welcomeContainer').style.display = 'block';
 });
-
+document.getElementById('exploreCourses').addEventListener('click', function() {
+    document.getElementById('welcomeContainer').style.display = 'none';
+    document.getElementById('exploreContainer').style.display = 'flex';
+});
+document.getElementById('closeExplore').addEventListener('click', function() {
+    document.getElementById('exploreContainer').style.display = 'none';
+    document.getElementById('welcomeContainer').style.display = 'block';
+});
+document.getElementById('searchButton').addEventListener('click', function() {
+    const searchQuery = document.getElementById('searchCourse').value;
+    console.log('Ищем курс по:', searchQuery);
+    //логика для фильтрации списка курсов
+});
 document.getElementById('courseForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
