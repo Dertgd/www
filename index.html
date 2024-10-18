@@ -18,22 +18,39 @@
         <div class="welcome-buttons">
             <button class="btn" id="exploreCourses">Исследовать курсы</button>
             <button class="btn" id="createCourse">Создать курс</button>
-            <button class="btn" id="contactUs">Связаться с нами</button>
+            <button class="btn" id="viewStatistics">Статистика</button>
+            <button class="btn" id="contactUsBtn">Разработчики</button>
         </div>
     </div>
 
     <div class="course-container" id="courseFormContainer" style="display: none;">
         <h1 class="course-title">Создать новый курс</h1>
-
         <form id="courseForm">
+            <button type="button" id="chooseTopic" class="btn">Выбрать тему</button>
+            <div id="selectedTopic" class="selected-topic"></div>
             <input type="text" id="courseName" placeholder="Название курса" required>
             <textarea id="courseDescription" placeholder="Описание курса" required></textarea>
             <input type="text" id="hashtags" placeholder="Хэштеги (через запятую)" required>
             <input type="url" id="links" placeholder="Добавьте ссылки" required>
-            <button type="button" id="addTopic">Добавить тему</button>
             <button type="submit" class="btn">Сохранить курс</button>
             <button type="button" class="btn" id="cancel">Отмена</button>
         </form>
+
+        <div class="topic-list" id="topicList" style="display: none;">
+            <h2>Выберите тему:</h2>
+            <ul class="cursor">
+                <li data-topic="Математика">Математика</li>
+                <li data-topic="Программирование">Программирование</li>
+                <li data-topic="Физика">Физика</li>
+                <li data-topic="Химия">Химия</li>
+                <li data-topic="История">История</li>
+                <li data-topic="География">География</li>
+                <li data-topic="Литература">Литература</li>
+                <li data-topic="Иностранные языки">Иностранные языки</li>
+                <li data-topic="Музыка">Музыка</li>
+                <li data-topic="Изобразительное искусство">Изобразительное искусство</li>
+            </ul>
+        </div>
     </div>
 
     <div class="explore-container" id="exploreContainer" style="display: none;">
@@ -42,11 +59,48 @@
             <input type="text" id="searchCourse" placeholder="Поиск по названию или хэштегу">
             <button id="searchButton" class="search-btn">🔍</button>
         </div>
-        <div class="list-container">
-            <div class="list-message">Список пока пуст</div>
+        <div class="list-container" id="courseListContainer">
+            <div class="list-message"></div>
+            <div class="course-list" id="courseList" style="overflow-y: auto; max-height: 300px;"></div>
         </div>
         <button class="btn" id="closeExplore">Закрыть</button>
     </div>
+
+    <div class="statistics-container" id="statisticsContainer" style="display: none;">
+        <h1>Статистика</h1>
+        <div class="stats">
+            <p>Имя пользователя: <span id="username"></span></p>
+            <p>Создано курсов: <span id="createdCourses">0</span></p>
+            <p>Выполнено курсов: <span id="completedCourses">0</span></p>
+        </div>
+        <button class="btn" id="closeStatistics">Закрыть</button>
+    </div>
+
+    <div class="course-info-container" id="courseInfoContainer" style="display: none;">
+        <h1 class="course-info-title" id="courseInfoTitle">Название курса</h1>
+        <p class="course-info-description" id="courseInfoDescription">Описание курса</p>
+        <p class="course-info-links">Ссылки на видео: <span id="courseInfoLinks"></span></p>
+        <button class="btn" id="markAsDone">Я прошел курс</button>
+        <button class="btn" id="cancelCourseInfo">Отмена</button>
+    </div>
+
+    <div class="contact-container" id="contactContainer" style="display: none;">
+        <h1>Наши разработчики</h1>
+        <div class="slider-container">
+            <div class="developer-card" id="developerCard">
+                <h2 id="developerName">Имя разработчика</h2>
+                <p id="developerBio">Краткая биография разработчика</p>
+            </div>
+            <div class="slider-controls">
+                <button class="btn" id="prevBtn">Назад</button>
+                <div id="sliderCounter">1/4</div>
+                <button class="btn" id="nextBtn">Вперед</button>
+            </div>
+        </div>
+        <button class="btn" id="closeContact">Закрыть</button>
+    </div>
+
+
 </div>
 
 <script src="./index.js"></script>
