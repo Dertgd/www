@@ -73,3 +73,11 @@ document.getElementById('courseForm').addEventListener('submit', function(event)
 
     document.getElementById('courseForm').reset();
 });
+
+
+const textarea = document.getElementById('courseDescription');
+
+textarea.addEventListener('input', () => {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px'; // Максимальная высота 300px
+});
