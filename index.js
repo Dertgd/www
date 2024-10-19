@@ -15,7 +15,7 @@ let userId = urlParams.get('user_id') || 'Неизвестный ID';
 let username = urlParams.get('username') || 'Неизвестный пользователь';
 
 function loadStatistics() {
-    fetch(`/statistics/${userId}`) // Запрос на получение статистики с сервера
+    fetch(`/statistics/${userId}`)
         .then(response => response.json())
         .then(data => {
             createdCoursesCount = data.createdCourses || 0;
@@ -29,11 +29,9 @@ function saveStatistics() {
         createdCourses: createdCoursesCount,
         completedCourses: completedCoursesCount,
     };
-    fetch(`/statistics/${userId}`, { // Отправляем статистику на сервер
+    fetch(`/statistics/${userId}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(statistics),
     });
 }
@@ -41,7 +39,7 @@ function saveStatistics() {
 function loadCourses() {
     courseList.innerHTML = '';
 
-    fetch('/courses') // Запрос на получение курсов с сервера
+    fetch('/courses')
         .then(response => response.json())
         .then(courses => {
             courses.forEach(course => {
@@ -52,6 +50,7 @@ function loadCourses() {
                     <p>Описание: ${course.description}</p>
                     <p>Хэштеги: ${course.hashtags}</p>
                     <button class="btn" onclick="showCourseDetails(${course.id})">Подробнее</button>
+                    <button class="btn close-btn" onclick="deleteCourse(${course.id})">Удалить</button>
                 `;
                 courseList.appendChild(courseItem);
             });
@@ -75,20 +74,19 @@ function createCourse() {
         description: courseDescription,
         hashtags: hashtags,
         topic: selectedTopic,
+        userId: userId
     };
 
-    fetch('/courses', { // Отправляем новый курс на сервер
+    fetch('/courses', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newCourse),
     })
         .then(response => response.json())
         .then(course => {
             createdCoursesCount++;
-            loadCourses(); // Перезагружаем курсы после добавления
-            saveStatistics(); 
+            loadCourses();
+            saveStatistics();
             updateStatistics();
         });
 
@@ -96,22 +94,26 @@ function createCourse() {
     welcomeContainer.style.display = 'block';
 }
 
+function deleteCourse(courseId) {
+    fetch(`/courses/${courseId}`, {
+        method: 'DELETE',
+    }).then(() => {
+        loadCourses();
+    });
+}
+
+// Show course details
 function showCourseDetails(courseId) {
-    const courseDetails = {
-        1: { title: 'Курс по Программированию для Начинающих', description: 'Этот курс познакомит вас с основами программирования на языке Python.', links: 'Ссылка на видео' },
-    };
+    fetch(`/courses/${courseId}`)
+        .then(response => response.json())
+        .then(course => {
+            document.getElementById('courseInfoTitle').innerText = course.title;
+            document.getElementById('courseInfoDescription').innerText = course.description;
+            document.getElementById('courseInfoLinks').innerHTML = `<a href="${course.links}" target="_blank">${course.links}</a>`;
 
-    const course = courseDetails[courseId];
-    if (course) {
-        document.getElementById('courseInfoTitle').innerText = course.title;
-        document.getElementById('courseInfoDescription').innerText = course.description;
-        document.getElementById('courseInfoLinks').innerText = course.links;
-
-        exploreContainer.style.display = 'none';
-        courseInfoContainer.style.display = 'block';
-    } else {
-        alert('Курс не найден');
-    }
+            exploreContainer.style.display = 'none';
+            courseInfoContainer.style.display = 'block';
+        });
 }
 
 document.getElementById('markAsDone').addEventListener('click', () => {
@@ -122,8 +124,9 @@ document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCounter.innerText = completedCoursesCount;
 });
 
+// View and update statistics for the user
 document.getElementById('viewStatistics').addEventListener('click', () => {
-    updateStatistics(); 
+    updateStatistics();
     welcomeContainer.style.display = 'none';
     statisticsContainer.style.display = 'block';
 });
@@ -177,7 +180,7 @@ document.getElementById('courseForm').addEventListener('submit', (event) => {
 });
 
 window.onload = () => {
-    loadStatistics(); 
+    loadStatistics();
     updateStatistics();
 };
 
@@ -190,10 +193,10 @@ const nextBtn = document.getElementById('nextBtn');
 const sliderCounter = document.getElementById('sliderCounter');
 
 const developers = [
-    { name: 'Абдукашев Линар', bio: 'Страстный программист с опытом работы более года в Python и полгода в веб-разработке на HTML, CSS и JavaScript. Владею основами React и умею работать с базами данных MySQL, SQL и Firebase. Стремлюсь к постоянному обучению и созданию эффективных решений.' },
-    { name: 'Карпов Влад', bio: 'навыки' },
-    { name: 'Волков Александр', bio: 'Креативный дизайнер с опытом работы в Figma, Photoshop и Illustrator, развивающий навыки на протяжении года. В процессе изучения C++ на среднем уровне, стремлюсь к сочетанию дизайна и программирования для создания интуитивно понятных интерфейсов.' },
-    { name: 'Даниил', bio: 'навыки' }
+    { name: 'Абдукашев Линар', bio: 'Страстный программист с опытом работы более года в Python...' },
+    { name: 'Карпов Влад', bio: 'Специалист по бэкенду с годом опыта разработки на Java. Создает надежные серверные приложения и API, обеспечивая высокую производительность и безопасность. Стремится к эффективным решениям и постоянному профессиональному росту.' },
+    { name: 'Волков Александр', bio: 'Креативный дизайнер с опытом работы...' },
+    { name: 'Ореховский Даниил', bio: 'Опытный разработчик с годом работы во фронтенде (HTML, CSS, JavaScript) и полгода на бэкенде (PHP). Уверенно создает адаптивные веб-сайты, ориентированные на пользователей. Стремится к совершенствованию и освоению новых технологий.' }
 ];
 
 let currentSlide = 0;
