@@ -23,8 +23,7 @@ body {
 .course-container,
 .explore-container,
 .statistics-container,
-.course-info-container,
-.contact-container {
+.course-info-container {
     padding: 20px;
     background-color: #ffffff;
     border-radius: 12px;
@@ -108,7 +107,11 @@ input:focus {
     overflow-y: auto;
 }
 
+/* Новый стиль для каждого курса */
 .course-item {
+    background-color: #f2f2f2; /* Темно-белый фон */
+    border-radius: 8px;
+    padding: 10px;
     margin-bottom: 15px;
 }
 
@@ -122,7 +125,7 @@ input:focus {
 }
 
 .course-info-description {
-    font-size:16px;             
+    font-size: 16px;
     color: #555;
 }
 
@@ -197,6 +200,20 @@ input:focus {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+/* Стиль для статистики */
+.statistics-container {
+    background-color: #ffffff; /* Белый фон для статистики */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.statistics-container p {
+    margin: 10px 0; /* Отступы между текстом в статистике */
 }
 
 /* Адаптивный дизайн */
