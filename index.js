@@ -15,58 +15,53 @@ let userId = urlParams.get('user_id') || 'Неизвестный ID';
 let username = urlParams.get('username') || 'Неизвестный пользователь';
 
 function loadStatistics() {
-    const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
-    if (statistics) {
-        createdCoursesCount = statistics.createdCourses || 0;
-        completedCoursesCount = statistics.completedCourses || 0;
-    }
-    updateStatistics();
+    fetch(`/statistics/${userId}`) // Запрос на получение статистики с сервера
+        .then(response => response.json())
+        .then(data => {
+            createdCoursesCount = data.createdCourses || 0;
+            completedCoursesCount = data.completedCourses || 0;
+            updateStatistics();
+        });
 }
 
 function saveStatistics() {
     const statistics = {
         createdCourses: createdCoursesCount,
         completedCourses: completedCoursesCount,
-        userId: userId,
-        username: username
     };
-    localStorage.setItem('courseStatistics', JSON.stringify(statistics)); // Сохранение статистики в локальное хранилище
-}
-
-function updateStatistics() {
-    createdCoursesCounter.innerText = createdCoursesCount;
-    completedCoursesCounter.innerText = completedCoursesCount;
-    document.getElementById('userIdDisplay').innerText = `ID пользователя: ${userId}`;
-    document.getElementById('usernameDisplay').innerText = `Имя пользователя: ${username}`;
+    fetch(`/statistics/${userId}`, { // Отправляем статистику на сервер
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(statistics),
+    });
 }
 
 function loadCourses() {
     courseList.innerHTML = '';
 
-    const courses = [
-        { id: 1, title: 'Курс по Программированию для Начинающих', description: 'Этот курс познакомит вас с основами программирования на языке Python.', hashtags: '#Python, #Программирование, #Начинающие' },
-        { id: 2, title: 'Курс по Математике', description: 'Изучите основы алгебры и геометрии.', hashtags: '#Математика, #Алгебра' },
-        { id: 3, title: 'Курс по Английскому языку', description: 'Начните говорить на английском!', hashtags: '#Английский, #Языки' },
-        { id: 4, title: 'Курс по Физике', description: 'Понимание физических явлений в нашей жизни.', hashtags: '#Физика' }
-    ];
+    fetch('/courses') // Запрос на получение курсов с сервера
+        .then(response => response.json())
+        .then(courses => {
+            courses.forEach(course => {
+                const courseItem = document.createElement('div');
+                courseItem.className = 'course-item';
+                courseItem.innerHTML = `
+                    <h3>${course.title}</h3>
+                    <p>Описание: ${course.description}</p>
+                    <p>Хэштеги: ${course.hashtags}</p>
+                    <button class="btn" onclick="showCourseDetails(${course.id})">Подробнее</button>
+                `;
+                courseList.appendChild(courseItem);
+            });
 
-    courses.forEach(course => {
-        const courseItem = document.createElement('div');
-        courseItem.className = 'course-item';
-        courseItem.innerHTML = `
-            <h3>${course.title}</h3>
-            <p>Описание: ${course.description}</p>
-            <p>Хэштеги: ${course.hashtags}</p>
-            <button class="btn" onclick="showCourseDetails(${course.id})">Подробнее</button>
-        `;
-        courseList.appendChild(courseItem);
-    });
-
-    if (courses.length === 0) {
-        const listMessage = document.createElement('div');
-        listMessage.innerText = 'Список пока пуст.';
-        courseList.appendChild(listMessage);
-    }
+            if (courses.length === 0) {
+                const listMessage = document.createElement('div');
+                listMessage.innerText = 'Список пока пуст.';
+                courseList.appendChild(listMessage);
+            }
+        });
 }
 
 function createCourse() {
@@ -82,18 +77,23 @@ function createCourse() {
         topic: selectedTopic,
     };
 
-    createdCoursesCount++;
-    courseList.innerHTML += `
-        <div class="course-item">
-            <h3>${newCourse.topic}: ${newCourse.title}</h3>
-            <button class="btn" onclick="showCourseDetails(${createdCoursesCount})">Подробнее</button>
-        </div>
-    `;
+    fetch('/courses', { // Отправляем новый курс на сервер
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCourse),
+    })
+        .then(response => response.json())
+        .then(course => {
+            createdCoursesCount++;
+            loadCourses(); // Перезагружаем курсы после добавления
+            saveStatistics(); 
+            updateStatistics();
+        });
 
     courseFormContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
-    saveStatistics(); 
-    updateStatistics();
 }
 
 function showCourseDetails(courseId) {
@@ -224,3 +224,8 @@ document.getElementById('closeContact').addEventListener('click', () => {
     contactContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
+
+function updateStatistics() {
+    createdCoursesCounter.innerText = createdCoursesCount;
+    completedCoursesCounter.innerText = completedCoursesCount;
+}
