@@ -11,20 +11,44 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
+let userId = null;
+let username = null;
+
 const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('user_id');
-const username = urlParams.get('username');
 
-// Теперь ты можешь использовать userId и username для отображения статистики
-console.log(`User ID: ${userId}, Username: ${username}`);
-
+// Извлечение user_id и username из URL
 function getUserInfo() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('user_id');  // Получаем user_id из параметров URL
-    const username = urlParams.get('username'); // Получаем username из параметров URL
-    return { userId: userId || 'Неизвестный ID', username: username || 'Неизвестный пользователь' };  // Возвращаем userId и username
+    userId = urlParams.get('user_id');
+    username = urlParams.get('username');
+    return { userId: userId || 'Неизвестный ID', username: username || 'Неизвестный пользователь' };
 }
 
+// Загружаем статистику из localStorage
+function loadStatistics() {
+    const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
+    if (statistics) {
+        createdCoursesCount = statistics.createdCourses || 0;
+        completedCoursesCount = statistics.completedCourses || 0;
+    }
+    updateStatistics(); // Обновляем отображение статистики
+}
+
+// Сохраняем статистику в localStorage
+function saveStatistics() {
+    const statistics = {
+        createdCourses: createdCoursesCount,
+        completedCourses: completedCoursesCount,
+    };
+    localStorage.setItem('courseStatistics', JSON.stringify(statistics));
+}
+
+// Обновляем статистику на экране
+function updateStatistics() {
+    createdCoursesCounter.innerText = createdCoursesCount;
+    completedCoursesCounter.innerText = completedCoursesCount;
+}
+
+// Загружаем данные при загрузке страницы
 window.onload = () => {
     const telegram = window.Telegram.WebApp;
 
@@ -34,87 +58,16 @@ window.onload = () => {
         // Получаем информацию о пользователе
         const userInfo = getUserInfo();
         usernameDisplay.innerText = userInfo.username !== 'Неизвестный пользователь' ? 'Пользователь: ' + userInfo.username : 'Пользователь не найден';
-        loadStatistics();  // Загрузка статистики
+        loadStatistics(); // Загружаем статистику
     } else {
         console.error("Telegram Web App не доступен.");
     }
+
+    // Для отладки
+    console.log(`User ID: ${userId}, Username: ${username}`);
 };
 
-
-// Обновляем статистику при завершении курса
-document.getElementById('markAsDone').addEventListener('click', () => {
-    completedCoursesCount++;
-    saveStatistics();
-    courseInfoContainer.style.display = 'none';
-    statisticsContainer.style.display = 'block';
-    completedCoursesCounter.innerText = completedCoursesCount;
-});
-
-// Переход к исследованию курсов
-document.getElementById('exploreCourses').addEventListener('click', () => {
-    welcomeContainer.style.display = 'none';
-    exploreContainer.style.display = 'block';
-    loadCourses();
-});
-
-// Переход к созданию курса
-document.getElementById('createCourse').addEventListener('click', () => {
-    welcomeContainer.style.display = 'none';
-    courseFormContainer.style.display = 'block';
-});
-
-// Показ статистики
-document.getElementById('viewStatistics').addEventListener('click', () => {
-    welcomeContainer.style.display = 'none';
-    statisticsContainer.style.display = 'block';
-    updateStatistics();
-});
-
-// Отмена создания курса
-document.getElementById('cancel').addEventListener('click', () => {
-    courseFormContainer.style.display = 'none';
-    welcomeContainer.style.display = 'block';
-});
-
-// Закрытие раздела исследований
-document.getElementById('closeExplore').addEventListener('click', () => {
-    exploreContainer.style.display = 'none';
-    welcomeContainer.style.display = 'block';
-});
-
-// Закрытие статистики
-document.getElementById('closeStatistics').addEventListener('click', () => {
-    statisticsContainer.style.display = 'none';
-    welcomeContainer.style.display = 'block';
-});
-
-// Отмена просмотра информации о курсе
-document.getElementById('cancelCourseInfo').addEventListener('click', () => {
-    courseInfoContainer.style.display = 'none';
-    welcomeContainer.style.display = 'block';
-});
-
-// Выбор темы курса
-document.getElementById('chooseTopic').addEventListener('click', () => {
-    document.getElementById('topicList').style.display = 'block';
-});
-
-// Добавление выбранной темы
-document.querySelectorAll('#topicList li').forEach(item => {
-    item.addEventListener('click', () => {
-        const selectedTopic = item.getAttribute('data-topic');
-        document.getElementById('selectedTopic').innerText = selectedTopic;
-        document.getElementById('topicList').style.display = 'none';
-    });
-});
-
-// Отправка формы для создания курса
-document.getElementById('courseForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    createCourse();
-});
-
-// Функция загрузки курсов
+// Загрузка курсов
 function loadCourses() {
     courseList.innerHTML = '';
 
@@ -170,7 +123,7 @@ function createCourse() {
 
     courseFormContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
-    createdCoursesCounter.innerText = createdCoursesCount;
+    updateStatistics(); // Обновляем статистику
 }
 
 // Показ деталей курса
@@ -197,9 +150,23 @@ function showCourseDetails(courseId) {
 // Завершение курса
 document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCount++;
+    saveStatistics(); // Сохраняем статистику
     courseInfoContainer.style.display = 'none';
     statisticsContainer.style.display = 'block';
     completedCoursesCounter.innerText = completedCoursesCount;
+});
+
+// Переход к исследованию курсов
+document.getElementById('exploreCourses').addEventListener('click', () => {
+    welcomeContainer.style.display = 'none';
+    exploreContainer.style.display = 'block';
+    loadCourses();
+});
+
+// Переход к созданию курса
+document.getElementById('createCourse').addEventListener('click', () => {
+    welcomeContainer.style.display = 'none';
+    courseFormContainer.style.display = 'block';
 });
 
 // Обновление статистики
@@ -207,6 +174,52 @@ function updateStatistics() {
     createdCoursesCounter.innerText = createdCoursesCount;
     completedCoursesCounter.innerText = completedCoursesCount;
 }
+
+// Отмена создания курса
+document.getElementById('cancel').addEventListener('click', () => {
+    courseFormContainer.style.display = 'none';
+    welcomeContainer.style.display = 'block';
+});
+
+// Закрытие раздела исследований
+document.getElementById('closeExplore').addEventListener('click', () => {
+    exploreContainer.style.display = 'none';
+    welcomeContainer.style.display = 'block';
+});
+
+// Закрытие статистики
+document.getElementById('closeStatistics').addEventListener('click', () => {
+    statisticsContainer.style.display = 'none';
+    welcomeContainer.style.display = 'block';
+});
+
+// Отмена просмотра информации о курсе
+document.getElementById('cancelCourseInfo').addEventListener('click', () => {
+    courseInfoContainer.style.display = 'none';
+    welcomeContainer.style.display = 'block';
+});
+
+// Выбор темы курса
+document.getElementById('chooseTopic').addEventListener('click', () => {
+    document.getElementById('topicList').style.display = 'block';
+});
+
+// Добавление выбранной темы
+document.querySelectorAll('#topicList li').forEach(item => {
+    item.addEventListener('click', () => {
+        const selectedTopic = item.getAttribute('data-topic');
+        document.getElementById('selectedTopic').innerText = selectedTopic;
+        document.getElementById('topicList').style.display = 'none';
+    });
+});
+
+// Отправка формы для создания курса
+document.getElementById('courseForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    createCourse();
+});
+
+// Информация о нас
 const contactUsBtn = document.getElementById('contactUsBtn');
 const contactContainer = document.getElementById('contactContainer');
 const developerCard = document.getElementById('developerCard');
@@ -217,7 +230,7 @@ const nextBtn = document.getElementById('nextBtn');
 const sliderCounter = document.getElementById('sliderCounter');
 const closeContact = document.getElementById('closeContact');
 
-// Информация о нас
+// Раздел для разработчиков
 const developers = [
     { name: 'Имя фамилия', bio: 'навыки' },
     { name: 'Имя фамилия', bio: 'навыки' },
@@ -255,46 +268,3 @@ closeContact.addEventListener('click', () => {
     contactContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
-
-// Функция для сохранения статистики в localStorage
-function saveStatistics() {
-    const statistics = {
-        createdCourses: createdCoursesCount,
-        completedCourses: completedCoursesCount,
-    };
-    localStorage.setItem('courseStatistics', JSON.stringify(statistics));
-}
-
-// Функция для загрузки статистики из localStorage
-function loadStatistics() {
-    const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
-    if (statistics) {
-        createdCoursesCount = statistics.createdCourses || 0;
-        completedCoursesCount = statistics.completedCourses || 0;
-        createdCoursesCounter.innerText = createdCoursesCount;
-        completedCoursesCounter.innerText = completedCoursesCount;
-    }
-}
-
-// Вызываем функцию загрузки статистики при загрузке страницы
-window.onload = () => {
-    getUserId();
-    loadStatistics();
-    usernameDisplay.innerText = 'Пользователь ' + userId;
-};
-
-// Сохраняем статистику каждый раз, когда она обновляется
-document.getElementById('markAsDone').addEventListener('click', () => {
-    completedCoursesCount++;
-    saveStatistics();
-    courseInfoContainer.style.display = 'none';
-    statisticsContainer.style.display = 'block';
-    completedCoursesCounter.innerText = completedCoursesCount;
-});
-
-// Обновление статистики
-function updateStatistics() {
-    createdCoursesCounter.innerText = createdCoursesCount;
-    completedCoursesCounter.innerText = completedCoursesCount;
-    saveStatistics();
-}
