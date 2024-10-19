@@ -11,6 +11,7 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
+// Получаем userId и username из параметров URL
 const urlParams = new URLSearchParams(window.location.search);
 let userId = urlParams.get('user_id') || 'Неизвестный ID';
 let username = urlParams.get('username') || 'Неизвестный пользователь';
@@ -33,6 +34,8 @@ function saveStatistics() {
     const statistics = {
         createdCourses: createdCoursesCount,
         completedCourses: completedCoursesCount,
+        userId: userId, // Сохраняем userId
+        username: username // Сохраняем username
     };
     localStorage.setItem('courseStatistics', JSON.stringify(statistics));
 }
@@ -41,6 +44,9 @@ function saveStatistics() {
 function updateStatistics() {
     createdCoursesCounter.innerText = createdCoursesCount;
     completedCoursesCounter.innerText = completedCoursesCount;
+    // Обновляем отображение userId и username в статистике
+    document.getElementById('userIdDisplay').innerText = `ID пользователя: ${userId}`;
+    document.getElementById('usernameDisplay').innerText = `Имя пользователя: ${username}`;
 }
 
 // Функция загрузки курсов
@@ -198,6 +204,7 @@ document.getElementById('courseForm').addEventListener('submit', (event) => {
 // Функция для загрузки статистики
 window.onload = () => {
     loadStatistics(); // Загружаем статистику
+    updateStatistics(); // Обновляем статистику после загрузки
 };
 
 // Информация о нас
