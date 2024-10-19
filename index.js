@@ -11,6 +11,13 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('user_id');
+const username = urlParams.get('username');
+
+// Теперь ты можешь использовать userId и username для отображения статистики
+console.log(`User ID: ${userId}, Username: ${username}`);
+
 function getUserInfo() {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('user_id');  // Получаем user_id из параметров URL
