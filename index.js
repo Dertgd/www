@@ -11,31 +11,27 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
-// Получаем userId и username из параметров URL
 const urlParams = new URLSearchParams(window.location.search);
 let userId = urlParams.get('user_id') || 'Неизвестный ID';
 let username = urlParams.get('username') || 'Неизвестный пользователь';
 
-// Установка имени пользователя
 usernameDisplay.innerText = `Пользователь: ${username}`;
 
-// Загрузка статистики из localStorage
 function loadStatistics() {
     const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
     if (statistics) {
         createdCoursesCount = statistics.createdCourses || 0;
         completedCoursesCount = statistics.completedCourses || 0;
     }
-    updateStatistics(); // Обновляем отображение статистики
+    updateStatistics();
 }
 
-// Сохранение статистики в localStorage
 function saveStatistics() {
     const statistics = {
         createdCourses: createdCoursesCount,
         completedCourses: completedCoursesCount,
-        userId: userId, // Сохраняем userId
-        username: username // Сохраняем username
+        userId: userId,
+        username: username
     };
     localStorage.setItem('courseStatistics', JSON.stringify(statistics));
 }
