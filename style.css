@@ -107,11 +107,7 @@ input:focus {
     overflow-y: auto;
 }
 
-/* Новый стиль для каждого курса */
 .course-item {
-    background-color: #f2f2f2; /* Темно-белый фон */
-    border-radius: 8px;
-    padding: 10px;
     margin-bottom: 15px;
 }
 
@@ -130,8 +126,23 @@ input:focus {
 }
 
 .course-info-links {
-    font-size: 14px;
-    color: #0078ff;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.styled-links a {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 8px 12px;
+    background-color: #0078ff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.styled-links a:hover {
+    background-color: #005bb5;
 }
 
 .selected-topic {
@@ -202,56 +213,24 @@ input:focus {
     cursor: pointer;
 }
 
-/* Стиль для статистики */
 .statistics-container {
-    background-color: #ffffff; /* Белый фон для статистики */
-    padding: 20px;
+    background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
-.statistics-container p {
-    margin: 10px 0; /* Отступы между текстом в статистике */
+.user-info {
+    font-weight: bold;
+    color: #0078ff;
 }
 
-/* Адаптивный дизайн */
-@media (max-width: 500px) {
-    .container {
-        padding: 10px;
-        width: 90%;
-    }
+.close-btn {
+    background-color: #f44336; /* Красный цвет для кнопки закрыть */
+}
 
-    h1 {
-        font-size: 20px;
-    }
-
-    .welcome-description,
-    .course-info-description {
-        font-size: 14px;
-    }
-
-    input,
-    textarea {
-        font-size: 14px;
-    }
-
-    .btn {
-        font-size: 14px;
-        padding: 8px 10px;
-    }
-
-    #searchCourse {
-        width: 70%;
-    }
-
-    .slider-controls {
-        flex-direction: column;
-    }
-
-    .contact-container .btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
+.close-btn:hover {
+    background-color: #d32f2f;
 }
