@@ -16,9 +16,9 @@ function getUserId() {
     const telegram = window.Telegram.WebApp;
     const user = telegram.initDataUnsafe?.user;
     if (user) {
-        return user.id;
+        return user.id;m
     }
-    return 'Неизвестный пользователь';
+    return 'Неизвестный пользователь'; 
 }
 
 function getUsername() {
@@ -31,17 +31,18 @@ function getUsername() {
 }
 
 window.onload = () => {
-    const userId = getUserId();
     const username = getUsername();
-    
+
     const usernameDisplay = document.getElementById('username');
-    usernameDisplay.innerText = 'Пользователь: ' + username;
+    
+    if (usernameDisplay) {
+        usernameDisplay.innerText = 'Имя пользователя: ' + username;
+    } else {
+        console.error("Элемент с id 'username' не найден.");
+    }
 
-    loadStatistics()
+    loadStatistics();
 };
-
-// Остальные функции и обработчики событий остаются такими же
-
 
 // Переход к исследованию курсов
 document.getElementById('exploreCourses').addEventListener('click', () => {
