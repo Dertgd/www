@@ -14,18 +14,24 @@ let completedCoursesCount = 0;
 function getUserId() {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('user_id');
-    console.log('Полученный user_id:', userId); // Выводим в консоль для проверки
+    console.log('Полученный user_id:', userId); // Для проверки
     return userId ? userId : 'Неизвестный ID';
 }
 
-
-
 window.onload = () => {
-    const userId = getUserId();
-    usernameDisplay.innerText = 'ID пользователя: ' + userId; // Отображаем ID пользователя
-    loadStatistics(); // Загрузка статистики
-};
+    const telegram = window.Telegram.WebApp;
 
+    if (telegram) {
+        telegram.ready(); // Убедимся, что Web App готов
+
+        // Получаем ID пользователя
+        const userId = getUserId();
+        usernameDisplay.innerText = userId !== 'Неизвестный ID' ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
+        loadStatistics();  // Загрузка статистики
+    } else {
+        console.error("Telegram Web App не доступен.");
+    }
+};
 // Обновляем статистику при завершении курса
 document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCount++;
