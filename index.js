@@ -11,19 +11,14 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
-let userId = null;
-let username = null;
-
 const urlParams = new URLSearchParams(window.location.search);
+let userId = urlParams.get('user_id') || 'Неизвестный ID';
+let username = urlParams.get('username') || 'Неизвестный пользователь';
 
-// Извлечение user_id и username из URL
-function getUserInfo() {
-    userId = urlParams.get('user_id');
-    username = urlParams.get('username');
-    return { userId: userId || 'Неизвестный ID', username: username || 'Неизвестный пользователь' };
-}
+// Установка имени пользователя
+usernameDisplay.innerText = `Пользователь: ${username}`;
 
-// Загружаем статистику из localStorage
+// Загрузка статистики из localStorage
 function loadStatistics() {
     const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
     if (statistics) {
@@ -33,7 +28,7 @@ function loadStatistics() {
     updateStatistics(); // Обновляем отображение статистики
 }
 
-// Сохраняем статистику в localStorage
+// Сохранение статистики в localStorage
 function saveStatistics() {
     const statistics = {
         createdCourses: createdCoursesCount,
@@ -42,32 +37,13 @@ function saveStatistics() {
     localStorage.setItem('courseStatistics', JSON.stringify(statistics));
 }
 
-// Обновляем статистику на экране
+// Обновление статистики на экране
 function updateStatistics() {
     createdCoursesCounter.innerText = createdCoursesCount;
     completedCoursesCounter.innerText = completedCoursesCount;
 }
 
-// Загружаем данные при загрузке страницы
-window.onload = () => {
-    const telegram = window.Telegram.WebApp;
-
-    if (telegram) {
-        telegram.ready(); // Убедимся, что Web App готов
-
-        // Получаем информацию о пользователе
-        const userInfo = getUserInfo();
-        usernameDisplay.innerText = userInfo.username !== 'Неизвестный пользователь' ? 'Пользователь: ' + userInfo.username : 'Пользователь не найден';
-        loadStatistics(); // Загружаем статистику
-    } else {
-        console.error("Telegram Web App не доступен.");
-    }
-
-    // Для отладки
-    console.log(`User ID: ${userId}, Username: ${username}`);
-};
-
-// Загрузка курсов
+// Функция загрузки курсов
 function loadCourses() {
     courseList.innerHTML = '';
 
@@ -102,14 +78,12 @@ function createCourse() {
     const courseName = document.getElementById('courseName').value;
     const courseDescription = document.getElementById('courseDescription').value;
     const hashtags = document.getElementById('hashtags').value;
-    const links = document.getElementById('links').value;
     const selectedTopic = document.getElementById('selectedTopic').innerText;
 
     const newCourse = {
         title: courseName,
         description: courseDescription,
         hashtags: hashtags,
-        links: links,
         topic: selectedTopic,
     };
 
@@ -123,13 +97,14 @@ function createCourse() {
 
     courseFormContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
+    saveStatistics(); // Сохраняем статистику
     updateStatistics(); // Обновляем статистику
 }
 
 // Показ деталей курса
 function showCourseDetails(courseId) {
     const courseDetails = {
-        1: { title: 'Курс по Программированию для Начинающих', description: 'Этот курс познакомит вас с основами программирования на языке Python. Вы научитесь писать простые программы.', links: 'Ссылка на видео' },
+        1: { title: 'Курс по Программированию для Начинающих', description: 'Этот курс познакомит вас с основами программирования на языке Python.', links: 'Ссылка на видео' },
         // можно еще добавить
     };
 
@@ -147,7 +122,7 @@ function showCourseDetails(courseId) {
     }
 }
 
-// Завершение курса
+// Обработчики событий для кнопок
 document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCount++;
     saveStatistics(); // Сохраняем статистику
@@ -175,12 +150,6 @@ document.getElementById('createCourse').addEventListener('click', () => {
     welcomeContainer.style.display = 'none';
     courseFormContainer.style.display = 'block';
 });
-
-// Обновление статистики
-function updateStatistics() {
-    createdCoursesCounter.innerText = createdCoursesCount;
-    completedCoursesCounter.innerText = completedCoursesCount;
-}
 
 // Отмена создания курса
 document.getElementById('cancel').addEventListener('click', () => {
@@ -225,6 +194,11 @@ document.getElementById('courseForm').addEventListener('submit', (event) => {
     event.preventDefault();
     createCourse();
 });
+
+// Функция для загрузки статистики
+window.onload = () => {
+    loadStatistics(); // Загружаем статистику
+};
 
 // Информация о нас
 const contactUsBtn = document.getElementById('contactUsBtn');
