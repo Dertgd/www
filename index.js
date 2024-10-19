@@ -21,7 +21,6 @@ function getUserId() {
     return 'Неизвестный ID';  // Если данные не получены
 }
 
-// Инициализация при загрузке страницы
 window.onload = () => {
     const telegram = window.Telegram.WebApp;
 
@@ -31,12 +30,12 @@ window.onload = () => {
 
         // Получаем ID пользователя
         const userId = getUserId();
-        usernameDisplay.innerText = userId ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
+        usernameDisplay.innerText = userId !== 'Неизвестный ID' ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
         loadStatistics();  // Загрузка статистики
     } else {
         console.error("Telegram Web App не доступен.");
     }
-}
+};
 
 // Обновляем статистику при завершении курса
 document.getElementById('markAsDone').addEventListener('click', () => {
