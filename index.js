@@ -13,9 +13,8 @@ let completedCoursesCount = 0;
 
 function getUserId() {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('user_id');
-    console.log('Полученный user_id:', userId); // Для проверки
-    return userId ? userId : 'Неизвестный ID';
+    const userId = urlParams.get('user_id');  // Получаем user_id из параметров URL
+    return userId || 'Неизвестный ID';  // Возвращаем userId или сообщение
 }
 
 window.onload = () => {
