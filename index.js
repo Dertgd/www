@@ -11,11 +11,13 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
-function getUserId() {
+function getUserInfo() {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('user_id');  // Получаем user_id из параметров URL
-    return userId || 'Неизвестный ID';  // Возвращаем userId или сообщение
+    const username = urlParams.get('username'); // Попробуем получить username из параметров URL
+    return { userId: userId || 'Неизвестный ID', username: username || 'Неизвестный пользователь' };  // Возвращаем userId и username
 }
+
 
 window.onload = () => {
     const telegram = window.Telegram.WebApp;
@@ -23,14 +25,15 @@ window.onload = () => {
     if (telegram) {
         telegram.ready(); // Убедимся, что Web App готов
 
-        // Получаем ID пользователя
-        const userId = getUserId();
-        usernameDisplay.innerText = userId !== 'Неизвестный ID' ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
+        // Получаем информацию о пользователе
+        const userInfo = getUserInfo();
+        usernameDisplay.innerText = userInfo.username !== 'Неизвестный пользователь' ? 'Пользователь: ' + userInfo.username : 'Пользователь не найден';
         loadStatistics();  // Загрузка статистики
     } else {
         console.error("Telegram Web App не доступен.");
     }
 };
+
 // Обновляем статистику при завершении курса
 document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCount++;
