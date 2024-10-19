@@ -1,5 +1,6 @@
 package org.ngcvfb.lmsapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,12 +20,41 @@ public class UserModel {
 
 
     @Column(unique = true)
-    private Long telegramId;
+    private String telegramId;
 
-    private String username;
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CourseModel> createdCourses;
 
-    @ManyToMany(mappedBy = "students")
-    private Set<CourseModel> courses;
+    @ManyToMany
+    @JoinTable(
+            name = "user_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    @JsonIgnore
+    private List<CourseModel> enrolledCourses;
+
+    @ManyToMany
+    @JoinTable(
+            name = "completed_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    @JsonIgnore
+    private List<CourseModel> completedCourses;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_completed_themes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "theme_id")
+    )
+    @JsonIgnore
+    private List<ThemeModel> completedThemes;
+
+
 
 
 }

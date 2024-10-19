@@ -1,9 +1,11 @@
 package org.ngcvfb.lmsapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -21,8 +23,18 @@ public class CourseModel {
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
+    @JsonIgnore
     private UserModel creator;
 
+    @ManyToMany(mappedBy = "enrolledCourses")
+    private List<UserModel> students;
+
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private Set<ThemeModel> themes;
+    private List<ThemeModel> themes;
+
+
+    @ElementCollection
+    private List<String> tags;
+
 }

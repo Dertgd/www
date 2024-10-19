@@ -1,8 +1,11 @@
 package org.ngcvfb.lmsapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,10 +19,17 @@ public class ThemeModel {
 
     private String title;
 
-    @Lob  // Если это будет большой текст
-    private String content;
+    @Column(columnDefinition="TEXT")
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonIgnore
     private CourseModel course;
+
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<HomeWorkModel> homeWorks;
+
+
 }

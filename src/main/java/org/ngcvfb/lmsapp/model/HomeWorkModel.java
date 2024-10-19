@@ -1,6 +1,7 @@
 package org.ngcvfb.lmsapp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,19 +17,21 @@ public class HomeWorkModel {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonIgnore
     private CourseModel course;
 
     @ManyToOne
     @JoinColumn(name = "theme_id")
+    @JsonIgnore
     private ThemeModel theme;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String question;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String answer;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String solution;
 
 }
