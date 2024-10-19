@@ -30,7 +30,7 @@ function saveStatistics() {
         userId: userId,
         username: username
     };
-    localStorage.setItem('courseStatistics', JSON.stringify(statistics));
+    localStorage.setItem('courseStatistics', JSON.stringify(statistics)); // Сохранение статистики в локальное хранилище
 }
 
 function updateStatistics() {
