@@ -102,6 +102,22 @@ input:focus {
     background-color: #005bb5;
 }
 
+.close-btn {
+    background-color: #0078ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px 0;
+}
+
+.close-btn:hover {
+    background-color: #005bb5;
+}
+
 .course-list {
     max-height: 300px;
     overflow-y: auto;
@@ -225,12 +241,4 @@ input:focus {
 .user-info {
     font-weight: bold;
     color: #0078ff;
-}
-
-.close-btn {
-    background-color: #f44336; /* Красный цвет для кнопки закрыть */
-}
-
-.close-btn:hover {
-    background-color: #d32f2f;
 }
