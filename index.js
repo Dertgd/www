@@ -14,10 +14,9 @@ let completedCoursesCount = 0;
 function getUserInfo() {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('user_id');  // Получаем user_id из параметров URL
-    const username = urlParams.get('username'); // Попробуем получить username из параметров URL
+    const username = urlParams.get('username'); // Получаем username из параметров URL
     return { userId: userId || 'Неизвестный ID', username: username || 'Неизвестный пользователь' };  // Возвращаем userId и username
 }
-
 
 window.onload = () => {
     const telegram = window.Telegram.WebApp;
@@ -33,6 +32,7 @@ window.onload = () => {
         console.error("Telegram Web App не доступен.");
     }
 };
+
 
 // Обновляем статистику при завершении курса
 document.getElementById('markAsDone').addEventListener('click', () => {
