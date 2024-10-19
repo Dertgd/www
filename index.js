@@ -12,14 +12,17 @@ let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 let userId = ''; // ID пользователя
 
-// Функция для получения ID юзера
+// Функция для получения ID юзера из Telegram Web App
 function getUserId() {
-    userId = 'user123'; // Пример ID
+    const telegram = window.Telegram.WebApp;
+    const userId = telegram.initDataUnsafe?.user?.id || 'Неизвестный пользователь'; // Получение ID пользователя
+    return userId;
 }
 
 // Инициализация при загрузке страницы
 window.onload = () => {
-    getUserId();
+    const userId = getUserId();
+    const usernameDisplay = document.getElementById('usernameDisplay'); // Получаем элемент отображения имени
     usernameDisplay.innerText = 'Пользователь ' + userId; // Отображение ника
 };
 
