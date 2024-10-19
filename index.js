@@ -130,7 +130,7 @@ function createCourse() {
 function showCourseDetails(courseId) {
     const courseDetails = {
         1: { title: 'Курс по Программированию для Начинающих', description: 'Этот курс познакомит вас с основами программирования на языке Python. Вы научитесь писать простые программы.', links: 'Ссылка на видео' },
-        //можно еще добавить
+        // можно еще добавить
     };
 
     const course = courseDetails[courseId];
@@ -154,6 +154,13 @@ document.getElementById('markAsDone').addEventListener('click', () => {
     courseInfoContainer.style.display = 'none';
     statisticsContainer.style.display = 'block';
     completedCoursesCounter.innerText = completedCoursesCount;
+});
+
+// Показ статистики
+document.getElementById('viewStatistics').addEventListener('click', () => {
+    updateStatistics(); // Обновляем данные перед отображением
+    welcomeContainer.style.display = 'none';
+    statisticsContainer.style.display = 'block';
 });
 
 // Переход к исследованию курсов
@@ -230,7 +237,6 @@ const nextBtn = document.getElementById('nextBtn');
 const sliderCounter = document.getElementById('sliderCounter');
 const closeContact = document.getElementById('closeContact');
 
-// Раздел для разработчиков
 const developers = [
     { name: 'Имя фамилия', bio: 'навыки' },
     { name: 'Имя фамилия', bio: 'навыки' },
