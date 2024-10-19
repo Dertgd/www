@@ -11,12 +11,14 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
-// Функция для получения ID юзера из URL
 function getUserId() {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('user_id');
-    return userId ? userId : 'Неизвестный ID'; // Возвращаем уникальный userId или сообщение
+    console.log('Полученный user_id:', userId); // Выводим в консоль для проверки
+    return userId ? userId : 'Неизвестный ID';
 }
+
+
 
 window.onload = () => {
     const userId = getUserId();
