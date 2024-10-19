@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "Bot Front script"))); // Замените 'ваша_папка_с_файлами' на папку, где находится ваш index.html
 
 let courses = [];
 let userStatistics = {};
