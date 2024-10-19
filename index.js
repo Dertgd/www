@@ -16,34 +16,25 @@ function getUserId() {
     const telegram = window.Telegram.WebApp;
     const user = telegram.initDataUnsafe?.user;
     if (user) {
-        return user.id;m
+        return user.id;  // Возвращаем уникальный userId
     }
-    return 'Неизвестный пользователь'; 
+    return 'Неизвестный ID';  // Если данные не получены
 }
 
-function getUsername() {
-    const telegram = window.Telegram.WebApp;
-    const user = telegram.initDataUnsafe?.user;
-    if (user) {
-        return user.username || user.first_name;
-    }
-    return 'Неизвестный пользователь';
-}
-
+// Инициализация при загрузке страницы
 window.onload = () => {
-    const username = getUsername();
+    const userId = getUserId();
 
-    const usernameDisplay = document.getElementById('username');
+    const usernameDisplay = document.getElementById('username');  // Проверяем, есть ли элемент с id 'username'
     
     if (usernameDisplay) {
-        usernameDisplay.innerText = 'Имя пользователя: ' + username;
+        usernameDisplay.innerText = 'ID пользователя: ' + userId;  // Отображаем только уникальный userId
     } else {
-        console.error("Элемент с id 'username' не найден.");
+        console.error("Элемент с id 'username' не найден.");  // Сообщаем об ошибке, если элемент не найден
     }
 
-    loadStatistics();
+    loadStatistics();  // Загрузка статистики
 };
-
 // Переход к исследованию курсов
 document.getElementById('exploreCourses').addEventListener('click', () => {
     welcomeContainer.style.display = 'none';
