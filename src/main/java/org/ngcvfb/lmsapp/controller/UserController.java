@@ -36,16 +36,6 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-//    @PutMapping("/{userId}")
-//    public ResponseEntity<UserModel> updateUser(@PathVariable Long userId, @RequestBody UserModel user) {
-//        return ResponseEntity.ok(userService.updateUser(userId, user));
-//    }
-
-//    @DeleteMapping("/{userId}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-//        userService.deleteUser(userId);
-//        return ResponseEntity.noContent().build();
-//    }
 
     // Получить курсы, которые пользователь создал
     @GetMapping("/{telegramId}/created-courses")
