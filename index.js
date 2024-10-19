@@ -10,21 +10,38 @@ const usernameDisplay = document.getElementById('username');
 
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
-let userId = ''; // ID пользователя
 
 // Функция для получения ID юзера из Telegram Web App
 function getUserId() {
     const telegram = window.Telegram.WebApp;
-    const userId = telegram.initDataUnsafe?.user?.id || 'Неизвестный пользователь'; // Получение ID пользователя
-    return userId;
+    const user = telegram.initDataUnsafe?.user;
+    if (user) {
+        return user.id;
+    }
+    return 'Неизвестный пользователь';
 }
 
-// Инициализация при загрузке страницы
+function getUsername() {
+    const telegram = window.Telegram.WebApp;
+    const user = telegram.initDataUnsafe?.user;
+    if (user) {
+        return user.username || user.first_name;
+    }
+    return 'Неизвестный пользователь';
+}
+
 window.onload = () => {
     const userId = getUserId();
-    const usernameDisplay = document.getElementById('usernameDisplay'); // Получаем элемент отображения имени
-    usernameDisplay.innerText = 'Пользователь ' + userId; // Отображение ника
+    const username = getUsername();
+    
+    const usernameDisplay = document.getElementById('username');
+    usernameDisplay.innerText = 'Пользователь: ' + username;
+
+    loadStatistics()
 };
+
+// Остальные функции и обработчики событий остаются такими же
+
 
 // Переход к исследованию курсов
 document.getElementById('exploreCourses').addEventListener('click', () => {
