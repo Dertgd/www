@@ -68,17 +68,17 @@
 
     <div class="statistics-container" id="statisticsContainer" style="display: none;">
         <h3>Статистика</h3>
-        <p id="userIdDisplay">ID пользователя: {userId}</p>
-        <p id="usernameDisplay">Имя пользователя: {username}</p>
+        <p id="userIdDisplay">ID пользователя: <span class="user-info">{userId}</span></p>
+        <p id="usernameDisplay">Имя пользователя: <span class="user-info">{username}</span></p>
         <p>Создано курсов: <span id="createdCourses">0</span></p>
         <p>Выполнено курсов: <span id="completedCourses">0</span></p>
-        <button id="closeStatistics">Закрыть</button>
+        <button id="closeStatistics" class="btn close-btn">Закрыть</button>
     </div>
 
     <div class="course-info-container" id="courseInfoContainer" style="display: none;">
         <h1 class="course-info-title" id="courseInfoTitle">Название курса</h1>
         <p class="course-info-description" id="courseInfoDescription">Описание курса</p>
-        <p class="course-info-links">Ссылки на видео: <span id="courseInfoLinks"></span></p>
+        <p class="course-info-links">Ссылки на видео: <span id="courseInfoLinks" class="styled-links"></span></p>
         <button class="btn" id="markAsDone">Я прошел курс</button>
         <button class="btn" id="cancelCourseInfo">Отмена</button>
     </div>
