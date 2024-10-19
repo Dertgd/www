@@ -23,29 +23,19 @@ function getUserId() {
 
 // Инициализация при загрузке страницы
 window.onload = () => {
-    const userId = getUserId();
-    usernameDisplay.innerText = userId ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
-    loadStatistics();  // Загрузка статистики
-};
+    const telegram = window.Telegram.WebApp;
 
-// Функция для загрузки статистики из localStorage
-function loadStatistics() {
-    const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
-    if (statistics) {
-        createdCoursesCount = statistics.createdCourses || 0;
-        completedCoursesCount = statistics.completedCourses || 0;
-        createdCoursesCounter.innerText = createdCoursesCount;
-        completedCoursesCounter.innerText = completedCoursesCount;
+    // Проверяем, доступен ли Telegram Web App
+    if (telegram) {
+        telegram.ready(); // Убедимся, что Web App готов
+
+        // Получаем ID пользователя
+        const userId = getUserId();
+        usernameDisplay.innerText = userId ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
+        loadStatistics();  // Загрузка статистики
+    } else {
+        console.error("Telegram Web App не доступен.");
     }
-}
-
-// Сохраняем статистику
-function saveStatistics() {
-    const statistics = {
-        createdCourses: createdCoursesCount,
-        completedCourses: completedCoursesCount,
-    };
-    localStorage.setItem('courseStatistics', JSON.stringify(statistics));
 }
 
 // Обновляем статистику при завершении курса
