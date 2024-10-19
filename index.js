@@ -4,9 +4,9 @@ const exploreContainer = document.getElementById('exploreContainer');
 const statisticsContainer = document.getElementById('statisticsContainer');
 const courseInfoContainer = document.getElementById('courseInfoContainer');
 const courseList = document.getElementById('courseList');
+const usernameDisplay = document.getElementById('username');
 const createdCoursesCounter = document.getElementById('createdCourses');
 const completedCoursesCounter = document.getElementById('completedCourses');
-const usernameDisplay = document.getElementById('username');
 
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
@@ -24,17 +24,39 @@ function getUserId() {
 // Инициализация при загрузке страницы
 window.onload = () => {
     const userId = getUserId();
-
-    const usernameDisplay = document.getElementById('username');  // Проверяем, есть ли элемент с id 'username'
-    
-    if (usernameDisplay) {
-        usernameDisplay.innerText = 'ID пользователя: ' + userId;  // Отображаем только уникальный userId
-    } else {
-        console.error("Элемент с id 'username' не найден.");  // Сообщаем об ошибке, если элемент не найден
-    }
-
+    usernameDisplay.innerText = userId ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
     loadStatistics();  // Загрузка статистики
 };
+
+// Функция для загрузки статистики из localStorage
+function loadStatistics() {
+    const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
+    if (statistics) {
+        createdCoursesCount = statistics.createdCourses || 0;
+        completedCoursesCount = statistics.completedCourses || 0;
+        createdCoursesCounter.innerText = createdCoursesCount;
+        completedCoursesCounter.innerText = completedCoursesCount;
+    }
+}
+
+// Сохраняем статистику
+function saveStatistics() {
+    const statistics = {
+        createdCourses: createdCoursesCount,
+        completedCourses: completedCoursesCount,
+    };
+    localStorage.setItem('courseStatistics', JSON.stringify(statistics));
+}
+
+// Обновляем статистику при завершении курса
+document.getElementById('markAsDone').addEventListener('click', () => {
+    completedCoursesCount++;
+    saveStatistics();
+    courseInfoContainer.style.display = 'none';
+    statisticsContainer.style.display = 'block';
+    completedCoursesCounter.innerText = completedCoursesCount;
+});
+
 // Переход к исследованию курсов
 document.getElementById('exploreCourses').addEventListener('click', () => {
     welcomeContainer.style.display = 'none';
