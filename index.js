@@ -36,16 +36,13 @@ function saveStatistics() {
     localStorage.setItem('courseStatistics', JSON.stringify(statistics));
 }
 
-// Обновление статистики на экране
 function updateStatistics() {
     createdCoursesCounter.innerText = createdCoursesCount;
     completedCoursesCounter.innerText = completedCoursesCount;
-    // Обновляем отображение userId и username в статистике
     document.getElementById('userIdDisplay').innerText = `ID пользователя: ${userId}`;
     document.getElementById('usernameDisplay').innerText = `Имя пользователя: ${username}`;
 }
 
-// Функция загрузки курсов
 function loadCourses() {
     courseList.innerHTML = '';
 
@@ -75,7 +72,6 @@ function loadCourses() {
     }
 }
 
-// Создание нового курса
 function createCourse() {
     const courseName = document.getElementById('courseName').value;
     const courseDescription = document.getElementById('courseDescription').value;
@@ -103,11 +99,9 @@ function createCourse() {
     updateStatistics();
 }
 
-// Показ деталей курса
 function showCourseDetails(courseId) {
     const courseDetails = {
         1: { title: 'Курс по Программированию для Начинающих', description: 'Этот курс познакомит вас с основами программирования на языке Python.', links: 'Ссылка на видео' },
-        // можно еще добавить
     };
 
     const course = courseDetails[courseId];
@@ -116,7 +110,6 @@ function showCourseDetails(courseId) {
         document.getElementById('courseInfoDescription').innerText = course.description;
         document.getElementById('courseInfoLinks').innerText = course.links;
 
-        // Скрыть другие контейнеры и показать контейнер информации о курсе
         exploreContainer.style.display = 'none';
         courseInfoContainer.style.display = 'block';
     } else {
@@ -124,7 +117,6 @@ function showCourseDetails(courseId) {
     }
 }
 
-// Обработчики событий для кнопок
 document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCount++;
     saveStatistics();
@@ -133,56 +125,47 @@ document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCounter.innerText = completedCoursesCount;
 });
 
-// Показ статистики
 document.getElementById('viewStatistics').addEventListener('click', () => {
     updateStatistics(); 
     welcomeContainer.style.display = 'none';
     statisticsContainer.style.display = 'block';
 });
 
-// Переход к исследованию курсов
 document.getElementById('exploreCourses').addEventListener('click', () => {
     welcomeContainer.style.display = 'none';
     exploreContainer.style.display = 'block';
     loadCourses();
 });
 
-// Переход к созданию курса
 document.getElementById('createCourse').addEventListener('click', () => {
     welcomeContainer.style.display = 'none';
     courseFormContainer.style.display = 'block';
 });
 
-// Отмена создания курса
 document.getElementById('cancel').addEventListener('click', () => {
     courseFormContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
 
-// Закрытие раздела исследований
 document.getElementById('closeExplore').addEventListener('click', () => {
     exploreContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
 
-// Закрытие статистики
 document.getElementById('closeStatistics').addEventListener('click', () => {
     statisticsContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
 
-// Отмена просмотра информации о курсе
 document.getElementById('cancelCourseInfo').addEventListener('click', () => {
     courseInfoContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
 
-// Выбор темы курса
 document.getElementById('chooseTopic').addEventListener('click', () => {
     document.getElementById('topicList').style.display = 'block';
 });
 
-// Добавление выбранной темы
 document.querySelectorAll('#topicList li').forEach(item => {
     item.addEventListener('click', () => {
         const selectedTopic = item.getAttribute('data-topic');
@@ -191,22 +174,18 @@ document.querySelectorAll('#topicList li').forEach(item => {
     });
 });
 
-// Отправка формы для создания курса
 document.getElementById('courseForm').addEventListener('submit', (event) => {
     event.preventDefault();
     createCourse();
 });
 
-// Функция для загрузки статистики
 window.onload = () => {
     loadStatistics(); 
     updateStatistics();
 };
 
-// Информация о нас
 const contactUsBtn = document.getElementById('contactUsBtn');
 const contactContainer = document.getElementById('contactContainer');
-const developerCard = document.getElementById('developerCard');
 const developerName = document.getElementById('developerName');
 const developerBio = document.getElementById('developerBio');
 const prevBtn = document.getElementById('prevBtn');
@@ -229,7 +208,6 @@ function updateSlide() {
     sliderCounter.innerText = `${currentSlide + 1}/${developers.length}`;
 }
 
-// Переключение слайдов
 nextBtn.addEventListener('click', () => {
     currentSlide = (currentSlide + 1) % developers.length;
     updateSlide();
@@ -240,7 +218,6 @@ prevBtn.addEventListener('click', () => {
     updateSlide();
 });
 
-// Открытие и закрытие слайдера
 contactUsBtn.addEventListener('click', () => {
     welcomeContainer.style.display = 'none';
     contactContainer.style.display = 'block';
