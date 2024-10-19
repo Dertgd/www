@@ -11,30 +11,17 @@ const completedCoursesCounter = document.getElementById('completedCourses');
 let createdCoursesCount = 0;
 let completedCoursesCount = 0;
 
-// Функция для получения ID юзера из Telegram Web App
+// Функция для получения ID юзера из URL
 function getUserId() {
-    const telegram = window.Telegram.WebApp;
-    const user = telegram.initDataUnsafe?.user;
-    if (user) {
-        return user.id;  // Возвращаем уникальный userId
-    }
-    return 'Неизвестный ID';  // Если данные не получены
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('user_id');
+    return userId ? userId : 'Неизвестный ID'; // Возвращаем уникальный userId или сообщение
 }
 
 window.onload = () => {
-    const telegram = window.Telegram.WebApp;
-
-    // Проверяем, доступен ли Telegram Web App
-    if (telegram) {
-        telegram.ready(); // Убедимся, что Web App готов
-
-        // Получаем ID пользователя
-        const userId = getUserId();
-        usernameDisplay.innerText = userId !== 'Неизвестный ID' ? 'ID пользователя: ' + userId : 'ID пользователя не найден';
-        loadStatistics();  // Загрузка статистики
-    } else {
-        console.error("Telegram Web App не доступен.");
-    }
+    const userId = getUserId();
+    usernameDisplay.innerText = 'ID пользователя: ' + userId; // Отображаем ID пользователя
+    loadStatistics(); // Загрузка статистики
 };
 
 // Обновляем статистику при завершении курса
