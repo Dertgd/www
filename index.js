@@ -4,7 +4,6 @@ const exploreContainer = document.getElementById('exploreContainer');
 const statisticsContainer = document.getElementById('statisticsContainer');
 const courseInfoContainer = document.getElementById('courseInfoContainer');
 const courseList = document.getElementById('courseList');
-const usernameDisplay = document.getElementById('username');
 const createdCoursesCounter = document.getElementById('createdCourses');
 const completedCoursesCounter = document.getElementById('completedCourses');
 
@@ -14,8 +13,6 @@ let completedCoursesCount = 0;
 const urlParams = new URLSearchParams(window.location.search);
 let userId = urlParams.get('user_id') || 'Неизвестный ID';
 let username = urlParams.get('username') || 'Неизвестный пользователь';
-
-usernameDisplay.innerText = `Пользователь: ${username}`;
 
 function loadStatistics() {
     const statistics = JSON.parse(localStorage.getItem('courseStatistics'));
@@ -191,7 +188,6 @@ const developerBio = document.getElementById('developerBio');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const sliderCounter = document.getElementById('sliderCounter');
-const closeContact = document.getElementById('closeContact');
 
 const developers = [
     { name: 'Имя фамилия', bio: 'навыки' },
@@ -224,7 +220,7 @@ contactUsBtn.addEventListener('click', () => {
     updateSlide();
 });
 
-closeContact.addEventListener('click', () => {
+document.getElementById('closeContact').addEventListener('click', () => {
     contactContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
 });
