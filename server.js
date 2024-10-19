@@ -1,46 +1,54 @@
-const express = require('express'); // Импортируем Express для создания сервера
-const bodyParser = require('body-parser'); // Для парсинга данных в запросах
-const cors = require('cors'); // Для обеспечения кросс-доменных запросов
-const app = express(); // Создаем экземпляр приложения Express
-const PORT = 3000; // Порт для сервера
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
+const PORT = 3000;
 
-app.use(cors()); // Включаем CORS
-app.use(bodyParser.json()); // Для парсинга JSON
-app.use(bodyParser.urlencoded({ extended: true })); // Для парсинга urlencoded данных
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-let courses = []; // Массив для хранения курсов
-let userStatistics = {}; // Объект для хранения статистики пользователей
+let courses = [];
+let userStatistics = {};
 
-// Эндпоинт для получения всех курсов
 app.get('/courses', (req, res) => {
-    res.json(courses); // Отправляем массив курсов в ответе
+    res.json(courses);
 });
 
-// Эндпоинт для создания нового курса
 app.post('/courses', (req, res) => {
-    const newCourse = req.body; // Получаем новый курс из тела запроса
-    courses.push(newCourse); // Добавляем курс в массив
-    res.status(201).json(newCourse); // Отправляем созданный курс в ответе
-});
-
-// Эндпоинт для получения статистики пользователя
-app.get('/statistics/:userId', (req, res) => {
-    const userId = req.params.userId; // Получаем ID пользователя из параметров
-    res.json(userStatistics[userId] || { createdCourses: 0, completedCourses: 0 }); // Возвращаем статистику или 0
-});
-
-// Эндпоинт для обновления статистики пользователя
-app.post('/statistics/:userId', (req, res) => {
-    const userId = req.params.userId; // Получаем ID пользователя из параметров
-    const stats = req.body; // Получаем статистику из тела запроса
-    userStatistics[userId] = { // Сохраняем статистику для пользователя
-        createdCourses: stats.createdCourses || 0,
-        completedCourses: stats.completedCourses || 0,
+    const newCourse = {
+        id: courses.length + 1,
+        title: req.body.title,
+        description: req.body.description,
+        hashtags: req.body.hashtags,
     };
-    res.status(200).json(userStatistics[userId]); // Отправляем обновленную статистику в ответе
+    courses.push(newCourse);
+    res.status(201).json(newCourse);
 });
 
-// Запускаем сервер
+app.delete('/courses/:id', (req, res) => {
+    const courseId = parseInt(req.params.id);
+    courses = courses.filter(course => course.id !== courseId);
+    res.status(200).send('Курс удалён');
+});
+
+app.get('/statistics/:userId', (req, res) => {
+    const userId = req.params.userId;
+    if (!userStatistics[userId]) {
+        userStatistics[userId] = { createdCourses: 0, completedCourses: 0 };
+    }
+    res.json(userStatistics[userId]);
+});
+
+app.post('/statistics/:userId', (req, res) => {
+    const userId = req.params.userId;
+    if (!userStatistics[userId]) {
+        userStatistics[userId] = { createdCourses: 0, completedCourses: 0 };
+    }
+    userStatistics[userId] = req.body;
+    res.status(200).send('Статистика обновлена');
+});
+
 app.listen(PORT, () => {
-    console.log(`Сервер запущен на http://localhost:${PORT}`); // Логируем информацию о запуске сервера
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
