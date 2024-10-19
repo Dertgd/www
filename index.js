@@ -99,8 +99,8 @@ function createCourse() {
 
     courseFormContainer.style.display = 'none';
     welcomeContainer.style.display = 'block';
-    saveStatistics(); // Сохраняем статистику
-    updateStatistics(); // Обновляем статистику
+    saveStatistics(); 
+    updateStatistics();
 }
 
 // Показ деталей курса
@@ -127,7 +127,7 @@ function showCourseDetails(courseId) {
 // Обработчики событий для кнопок
 document.getElementById('markAsDone').addEventListener('click', () => {
     completedCoursesCount++;
-    saveStatistics(); // Сохраняем статистику
+    saveStatistics();
     courseInfoContainer.style.display = 'none';
     statisticsContainer.style.display = 'block';
     completedCoursesCounter.innerText = completedCoursesCount;
@@ -135,7 +135,7 @@ document.getElementById('markAsDone').addEventListener('click', () => {
 
 // Показ статистики
 document.getElementById('viewStatistics').addEventListener('click', () => {
-    updateStatistics(); // Обновляем данные перед отображением
+    updateStatistics(); 
     welcomeContainer.style.display = 'none';
     statisticsContainer.style.display = 'block';
 });
@@ -199,8 +199,8 @@ document.getElementById('courseForm').addEventListener('submit', (event) => {
 
 // Функция для загрузки статистики
 window.onload = () => {
-    loadStatistics(); // Загружаем статистику
-    updateStatistics(); // Обновляем статистику после загрузки
+    loadStatistics(); 
+    updateStatistics();
 };
 
 // Информация о нас
